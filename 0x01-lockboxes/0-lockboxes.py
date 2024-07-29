@@ -1,22 +1,33 @@
 #!/usr/bin/python3
-"""Lockboxes"""
+"""Lockboxes module.
+
+This module contains a function related to the lockboxes.
+"""
 
 
 def canUnlockAll(boxes):
-    """
-     a method that determines if all the boxes can be opened.
+    """Determines if all the boxes can be opened.
 
-    :param boxes:
-    :return: True or False
-    """
-    if not boxes or type(boxes) is not list:
-        return False
+    Args:
+        boxes (lst): the list of boxes containing a list of keys.
 
-    unlocked = [0]
-    for n in unlocked:
-        for key in boxes[n]:
-            if key not in unlocked and key < len(boxes):
-                unlocked.append(key)
-    if len(unlocked) == len(boxes):
-        return True
+    Returns:
+        bool: True if all boxes can be opened, False otherwise.
+    """
+    box_count = len(boxes)
+
+    if box_count > 0:
+        keys = boxes[0]
+        boxes[0] = [-1]
+        while keys:
+            new_keys = []
+            for key in keys:
+                if key < box_count:
+                    if boxes[key] != [-1]:
+                        new_keys += boxes[key]
+                        boxes[key] = [-1]
+            keys = new_keys
+
+        return boxes.count([-1]) == box_count
+
     return False
