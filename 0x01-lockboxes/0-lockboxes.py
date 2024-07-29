@@ -1,20 +1,25 @@
-#!/usr/bin/python3
-"""method that determines if all the boxes can be opened"""
-
 def canUnlockAll(boxes):
+    n = len(boxes)
+    unlocked = set([0])  # Start with the first box unlocked
+    keys = [0]  # Start processing keys from the first box
 
-    if (type(boxes) is not list):
-        return False
+    while keys:
+        current_key = keys.pop()
+        for key in boxes[current_key]:
+            if key < n and key not in unlocked:
+                unlocked.add(key)
+                keys.append(key)
 
-    if (len(boxes) == 0):
-        return False
+    return len(unlocked) == n
 
-    keys = [0]
-    for i in keys:
-        for j in boxes[i]:
-            if j not in keys and j != i and j < len(boxes) and j != 0:
-                keys.append(j)
-    if len(keys) == len(boxes):
-        return True
-    else:
-        return False
+# Example usage
+if __name__ == "__main__":
+    boxes = [[1], [2], [3], [4], []]
+    print(canUnlockAll(boxes))  # Output: True
+
+    boxes = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
+    print(canUnlockAll(boxes))  # Output: True
+
+    boxes = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
+    print(canUnlockAll(boxes))  # Output: False
+
